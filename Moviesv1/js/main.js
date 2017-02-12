@@ -189,7 +189,7 @@ $(function () {
     }
 
     //IndexDB Management
-
+    //Open connection and create the database 
     function openConnection() {
         // open the indexedDB database
         var request = indexedDB.open("MoviesDatabase", 1);
