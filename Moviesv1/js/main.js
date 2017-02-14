@@ -1,6 +1,6 @@
 $(function () {
     // define the application
-   // var MoviesDatabase = {};
+    // var MoviesDatabase = {};
     //variables to hold the indexedDB database.
     var dbMoviesDatabase;
     //The name of the table
@@ -62,6 +62,7 @@ $(function () {
             $('#pgMovieName').html(MovieRec.MovieName);
             $('#pgMovieYear').html(MovieRec.MovieYear);
             $('#pgMovieGenre').html(MovieRec.MovieGenre);
+            $('#pgMovieUrl').attr("src", MovieRec.url);
         }
 
     }
@@ -118,6 +119,9 @@ $(function () {
             //n is the key for defining the id
             nItem += '<a data-id="' + n + '" class="ui-btn ui-btn-icon-right ui-icon-carat-r" href="#pgDetailMovie">';
 
+            //add the image
+            nItem += '<img src="' + MovieRec.url + '">';
+
             //add the title;
             nItem += '<h2>' + MovieRec.MovieName + "</h2>";
 
@@ -146,6 +150,7 @@ $(function () {
         MovieRec.MovieName = $('#pgAddMovieMovieName').val().trim();
         MovieRec.MovieYear = $('#pgAddMovieMovieYear').val().trim();
         MovieRec.MovieGenre = $('#pgAddMovieMovieGenre').val().trim();
+        MovieRec.url = $('#pgAddMovieMovieUrl').val().trim();
         return MovieRec;
     }
 
@@ -175,6 +180,7 @@ $(function () {
         $('#pgAddMovieMovieName').val('');
         $('#pgAddMovieMovieYear').val('');
         $('#pgAddMovieMovieGenre').val('');
+        $('#pgAddMovieMovieUrl').val('');
     }
 
     // Gets an unique id randomly
@@ -204,10 +210,14 @@ $(function () {
         request.onsuccess = function (e) {
             dbMoviesDatabase = e.target.result;
         }
+        //An error was fired
+        request.onerror = function (e) {
+            alert('error opening the BD');
+        }
     }
 
 
-    function getObjectStore( mode) {
+    function getObjectStore(mode) {
         var transaction = dbMoviesDatabase.transaction(objectStoreName, mode);
         return transaction.objectStore("movies");
     }
